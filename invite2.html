@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Birthday Bash Invitation!</title>
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            font-family: 'Comic Sans MS', cursive;
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1.5rem;
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+            transform: scale(0);
+            animation: popIn 1s forwards;
+            position: relative;
+            overflow-y: auto;
+            max-height: 90vh;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 1rem;
+                max-height: 95vh;
+            }
+        }
+
+        @keyframes popIn {
+            to { transform: scale(1); }
+        }
+
+        h1 {
+            color: #ff6b6b;
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            margin: 0.5rem 0;
+            animation: colorChange 2s infinite alternate;
+        }
+
+        @keyframes colorChange {
+            from { color: #ff6b6b; }
+            to { color: #4ecdc4; }
+        }
+
+        .details {
+            margin: 1rem 0;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 1s forwards;
+            animation-delay: 0.5s;
+            font-size: clamp(1rem, 2.5vw, 1.1rem);
+        }
+
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .game-container {
+            margin: 1rem 0;
+            padding: 1rem;
+            background: #ffe66d;
+            border-radius: 15px;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+        }
+
+        .food {
+            cursor: pointer;
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            position: absolute;
+            transition: transform 0.3s;
+            touch-action: manipulation;
+        }
+
+        @media (hover: hover) {
+            .food:hover { transform: scale(1.2); }
+        }
+
+        #score {
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
+            color: #2d3436;
+            margin: 0.5rem 0;
+        }
+
+        .falling {
+            animation: fall 3s linear forwards;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(100vh); }
+        }
+
+        .highlight {
+            color: #ff6b6b;
+            font-weight: bold;
+            display: inline-block;
+            padding: 2px 5px;
+        }
+
+        .bounce {
+            animation: bounce 1s infinite;
+            font-size: clamp(1rem, 2.5vw, 1.1rem);
+            margin: 0.5rem 0;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Mobile-specific adjustments */
+        @media (max-width: 768px) {
+            body { padding: 10px; }
+            
+            .details p {
+                margin: 0.8rem 0;
+            }
+            
+            .game-container {
+                padding: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 { font-size: 2rem; }
+            
+            .details {
+                font-size: 0.95rem;
+            }
+            
+            .food {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎉 Birthday Blast! 🎂</h1>
+        
+        <div class="details">
+            <p>📅 Date: <span class="highlight">25th Feb 2025</span></p>
+            <p>🏠 Address: <span class="highlight">3014 Lorenzo Apt</span></p>
+            <p>⏰ Time: <span class="highlight">10 PM Onwards</span></p>
+            <p>✨ Fun, Chill & Bhojan! 🍔🍕🍰</p>
+        </div>
+
+        <div class="game-container">
+            <p>Catch the falling snacks! 🍩</p>
+            <p id="score">Score: 0</p>
+        </div>
+
+        <p class="bounce">Don't miss the fun! 🎈</p>
+    </div>
+
+    <script>
+        let score = 0;
+        const emojis = ['🍔', '🍕', '🍩', '🍰', '🥤', '🍟'];
+        
+        function spawnEmoji() {
+            const emoji = document.createElement('div');
+            emoji.className = 'food falling';
+            emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            emoji.style.left = Math.random() * 95 + '%';
+            
+            // Add both touch and click events
+            emoji.addEventListener('click', handleTap);
+            emoji.addEventListener('touchstart', handleTap);
+
+            document.body.appendChild(emoji);
+            
+            emoji.addEventListener('animationend', () => {
+                emoji.remove();
+            });
+        }
+
+        function handleTap(e) {
+            e.preventDefault();
+            score++;
+            document.getElementById('score').textContent = `Score: ${score}`;
+            this.remove();
+        }
+
+        // Start game
+        setInterval(spawnEmoji, 1000);
+
+        // Initial animations
+        document.querySelectorAll('.details p').forEach((p, index) => {
+            p.style.animationDelay = `${0.8 + index * 0.2}s`;
+        });
+
+        // Prevent zoom on mobile
+        document.addEventListener('touchstart', function(e) {
+            if(e.touches.length > 1) e.preventDefault();
+        }, { passive: false });
+    </script>
+</body>
+</html>
