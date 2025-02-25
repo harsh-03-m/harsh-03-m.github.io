@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Birthday Bash Invitation!</title>
+    <title>Birthday Game Night Invitation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0;
@@ -12,7 +13,7 @@
             justify-content: center;
             align-items: center;
             background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-            font-family: 'Comic Sans MS', cursive;
+            font-family: 'Roboto', sans-serif;
             overflow: hidden;
             padding: 20px;
         }
@@ -32,13 +33,6 @@
             max-height: 90vh;
         }
 
-        @media (max-width: 480px) {
-            .container {
-                padding: 1rem;
-                max-height: 95vh;
-            }
-        }
-
         @keyframes popIn {
             to { transform: scale(1); }
         }
@@ -48,6 +42,9 @@
             font-size: clamp(1.8rem, 5vw, 2.5rem);
             margin: 0.5rem 0;
             animation: colorChange 2s infinite alternate;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
         @keyframes colorChange {
@@ -62,6 +59,7 @@
             animation: fadeInUp 1s forwards;
             animation-delay: 0.5s;
             font-size: clamp(1rem, 2.5vw, 1.1rem);
+            line-height: 1.6;
         }
 
         @keyframes fadeInUp {
@@ -74,6 +72,7 @@
             background: #ffe66d;
             border-radius: 15px;
             font-size: clamp(0.9rem, 2.5vw, 1rem);
+            border: 3px dashed #ff6b6b;
         }
 
         .food {
@@ -82,16 +81,14 @@
             position: absolute;
             transition: transform 0.3s;
             touch-action: manipulation;
-        }
-
-        @media (hover: hover) {
-            .food:hover { transform: scale(1.2); }
+            user-select: none;
         }
 
         #score {
             font-size: clamp(1.2rem, 3vw, 1.5rem);
             color: #2d3436;
             margin: 0.5rem 0;
+            font-weight: 700;
         }
 
         .falling {
@@ -104,15 +101,18 @@
 
         .highlight {
             color: #ff6b6b;
-            font-weight: bold;
+            font-weight: 700;
             display: inline-block;
             padding: 2px 5px;
+            background: rgba(255, 107, 107, 0.1);
+            border-radius: 4px;
         }
 
         .bounce {
             animation: bounce 1s infinite;
             font-size: clamp(1rem, 2.5vw, 1.1rem);
             margin: 0.5rem 0;
+            font-weight: 700;
         }
 
         @keyframes bounce {
@@ -120,49 +120,35 @@
             50% { transform: translateY(-10px); }
         }
 
-        /* Mobile-specific adjustments */
         @media (max-width: 768px) {
             body { padding: 10px; }
-            
-            .details p {
-                margin: 0.8rem 0;
-            }
-            
-            .game-container {
-                padding: 0.8rem;
-            }
+            .details p { margin: 0.8rem 0; }
+            .game-container { padding: 0.8rem; }
         }
 
         @media (max-width: 480px) {
             h1 { font-size: 2rem; }
-            
-            .details {
-                font-size: 0.95rem;
-            }
-            
-            .food {
-                font-size: 2rem;
-            }
+            .details { font-size: 0.95rem; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🎉 Birthday Blast! 🎂</h1>
+        <h1>🎉 Birthday Game Night Invitation! 🎮</h1>
         
         <div class="details">
-            <p>📅 Date: <span class="highlight">25th Feb 2025</span></p>
-            <p>🏠 Address: <span class="highlight">3014 Lorenzo Apt</span></p>
-            <p>⏰ Time: <span class="highlight">10 PM Onwards</span></p>
-            <p>✨ Fun, Chill & Bhojan! 🍔🍕🍰</p>
+            <p>📅 Date: <span class="highlight">25th February 2025</span></p>
+            <p>🏠 Venue: <span class="highlight">3014 Lorenzo Apartments</span></p>
+            <p>⏰ Time: <span class="highlight">10:00 PM Sharp!</span></p>
+            <p>✨ Featuring: <span class="highlight">Fun Games • Chill Vibes • Delicious Bhojan</span></p>
         </div>
 
         <div class="game-container">
-            <p>Catch the falling snacks! 🍩</p>
+            <p>🎮 Warm-up Game: Catch the Falling Snacks! 🍩</p>
             <p id="score">Score: 0</p>
         </div>
 
-        <p class="bounce">Don't miss the fun! 🎈</p>
+        <p class="bounce">Your Presence is the Best Present! 🎁</p>
     </div>
 
     <script>
@@ -175,7 +161,6 @@
             emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
             emoji.style.left = Math.random() * 95 + '%';
             
-            // Add both touch and click events
             emoji.addEventListener('click', handleTap);
             emoji.addEventListener('touchstart', handleTap);
 
@@ -193,15 +178,12 @@
             this.remove();
         }
 
-        // Start game
         setInterval(spawnEmoji, 1000);
 
-        // Initial animations
         document.querySelectorAll('.details p').forEach((p, index) => {
             p.style.animationDelay = `${0.8 + index * 0.2}s`;
         });
 
-        // Prevent zoom on mobile
         document.addEventListener('touchstart', function(e) {
             if(e.touches.length > 1) e.preventDefault();
         }, { passive: false });
